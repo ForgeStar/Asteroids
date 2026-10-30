@@ -174,6 +174,9 @@ window.addEventListener("keydown", (e) => {
   if (e.code === "KeyM") { muted = !muted; if (muted) setEngine(false); }
   if (e.code === "KeyC") { setCRT((crtMode + 1) % 3); return; }
   if (e.code === "KeyN" && state === "play" && ship) doHyperspace();
+  // one bullet per press (OS key-repeat ignored) — the 4-bullet cap + bullet
+  // lifetime are the fire-rate limit, like the original
+  if (e.code === "Space" && !e.repeat && state === "play") fireShip();
   if (state === "attract" || state === "gameover") startGame();
 });
 window.addEventListener("keyup", (e) => { keys[e.code] = false; });
@@ -445,8 +448,6 @@ function update(dt) {
     wrap(ship);
     if (ship.invuln > 0) ship.invuln -= dt;
     setEngine(thrusting);
-
-    if (keys["Space"]) fireShip();
   } else if (!ship) {
     setEngine(false);
   }
