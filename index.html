@@ -80,16 +80,19 @@
 // ============================================================
 
 const W = 580, H = 435;
+const DPR = 2; // internal supersample so vector lines stay crisp when upscaled
 const cv = document.getElementById("game");
-cv.width = W; cv.height = H;
+cv.width = W * DPR; cv.height = H * DPR;
 const ctx = cv.getContext("2d");
+ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-// Scale the cabinet to fit the viewport (same approach as PONG/LANDER).
+// Scale the cabinet to fill the viewport (vector art, so upscaling is fine;
+// the CRT shader softens any raster softness). 4% margin from the edges.
 const PANEL_W = 1024, PANEL_H = 1024; // bezel.png
 const bezel = document.getElementById("bezel");
 function fitCanvas() {
-  const scale = Math.min(1, window.innerWidth / PANEL_W, window.innerHeight / PANEL_H);
-  bezel.style.width = Math.floor(PANEL_W * scale) + "px";
+  const scale = Math.min(window.innerWidth / PANEL_W, window.innerHeight / PANEL_H) * 0.96;
+  bezel.style.width = Math.floor(PANEL_W * Math.max(scale, 0.2)) + "px";
 }
 window.addEventListener("resize", fitCanvas);
 fitCanvas();
@@ -757,6 +760,7 @@ requestAnimationFrame(frame);
 // Game renders to 2D canvas, uploaded as a texture and drawn through a
 // fragment shader (scanlines, barrel distortion / tube curvature, glass sheen).
 let fx = document.getElementById("fx");
+fx.width = W * DPR; fx.height = H * DPR; // 1:1 with the game canvas
 const crtlabel = document.getElementById("crtlabel");
 let fxGL = null;
 
