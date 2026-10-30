@@ -8,7 +8,7 @@
 <meta name="twitter:card" content="player">
 <meta name="twitter:site" content="@_RexNebular_">
 <meta name="twitter:title" content="ASTEROIDS — Classic Arcade Clone">
-<meta name="twitter:description" content="Classic 1979 vector ASTEROIDS in an arcade cabinet: rotate, thrust, shoot, hyperspace. With CRT glass, barrel distortion and scanlines. Playable right here in X.">
+<meta name="twitter:description" content="Classic 1979 vector ASTEROIDS: rotate, thrust, shoot, hyperspace. With CRT glass, barrel distortion and scanlines. Playable right here in X.">
 <meta name="twitter:image" content="https://forgestar.github.io/ASTEROIDS/preview.png">
 <meta name="twitter:player" content="https://forgestar.github.io/ASTEROIDS/">
 <meta name="twitter:player:width" content="480">
@@ -21,22 +21,12 @@
     font-family: "Courier New", monospace;
     user-select: none;
   }
-  /* Cabinet face: generated bezel (dark plastic, ASTEROIDS logotype)
-     with a TRANSPARENT screen window. */
-  #bezel { position: relative; line-height: 0; }
-  #bezel::before {
-    content: "";
-    display: block;
-    width: 100%;
-    padding-top: 100%; /* bezel.png is 1024x1024 */
-  }
-  /* The screen window = the transparent hole in bezel.png
-     (measured: left 158/1024, top 246/1024, 708x531) */
+  /* The game screen: a 4:3 window centred on the black page,
+     sized by fitCanvas() to fill the viewport. */
   #screen {
-    position: absolute;
-    left: 15.4297%; top: 24.0234%;
-    width: 69.140625%; height: 51.8555%;
+    position: relative;
     background: #000;
+    line-height: 0;
   }
   canvas {
     display: block;
@@ -48,13 +38,6 @@
   /* CRT shader layer overlays the game canvas; it is smooth, not pixelated,
      and never intercepts input */
   #fx { image-rendering: auto; pointer-events: none; }
-  /* Bezel art sits on top of the screen; its transparent hole shows the game */
-  #panel {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
   #hint {
     position: fixed; bottom: 8px; left: 0; right: 0;
     text-align: center; color: #556; font-size: 12px;
@@ -62,20 +45,16 @@
 </style>
 </head>
 <body>
-<div id="bezel">
-  <div id="screen">
-    <canvas id="game" width="580" height="435"></canvas>
-    <canvas id="fx" width="580" height="435"></canvas>
-  </div>
-  <img id="panel" src="bezel.webp" alt="" onerror="this.onerror=null;this.src='bezel.png'">
+<div id="screen">
+  <canvas id="game" width="580" height="435"></canvas>
+  <canvas id="fx" width="580" height="435"></canvas>
 </div>
 <div id="hint">&larr;/&rarr; or A/D rotate &middot; &uarr;/W thrust &middot; Space fire &middot; N hyperspace &middot; tap to start &middot; P pause &middot; M mute &middot; C CRT: <span id="crtlabel">Glass</span></div>
 <script>
 "use strict";
 // ============================================================
 // ASTEROIDS CLONE — single-file, vanilla JS + canvas
-// Classic 1979 Atari vector Asteroids (single player).
-// Cabinet: generated vector-style bezel.
+// Classic 1979 Atari vector Asteroids (single player), full-screen.
 // CRT effects (barrel distortion + scanlines) from LANDER/PONG.
 // ============================================================
 
@@ -86,13 +65,12 @@ cv.width = W * DPR; cv.height = H * DPR;
 const ctx = cv.getContext("2d");
 ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-// Scale the cabinet to fill the viewport (vector art, so upscaling is fine;
-// the CRT shader softens any raster softness). 4% margin from the edges.
-const PANEL_W = 1024, PANEL_H = 1024; // bezel.png
-const bezel = document.getElementById("bezel");
+// Size the 4:3 screen to fill the viewport (letterboxed, centred).
+const screen = document.getElementById("screen");
 function fitCanvas() {
-  const scale = Math.min(window.innerWidth / PANEL_W, window.innerHeight / PANEL_H) * 0.96;
-  bezel.style.width = Math.floor(PANEL_W * Math.max(scale, 0.2)) + "px";
+  const scale = Math.min(window.innerWidth / W, window.innerHeight / H);
+  screen.style.width = Math.max(160, Math.floor(W * scale)) + "px";
+  screen.style.height = Math.max(120, Math.floor(H * scale)) + "px";
 }
 window.addEventListener("resize", fitCanvas);
 fitCanvas();
