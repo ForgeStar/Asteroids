@@ -447,6 +447,7 @@ function update(dt) {
     ship.r = SHIP_R;
     wrap(ship);
     if (ship.invuln > 0) ship.invuln -= dt;
+    ship.thrusting = thrusting;
     setEngine(thrusting);
   } else if (!ship) {
     setEngine(false);
@@ -580,6 +581,16 @@ function drawShip(s) {
   ctx.lineTo(-10, 8);
   ctx.closePath();
   ctx.stroke();
+  // thruster flame: rear corners converging to a tail point that flickers
+  // between long and short, like the original vector render
+  if (s.thrusting) {
+    const f = (Math.floor(performance.now() / 40) % 2 === 0) ? 12 : 6;
+    ctx.beginPath();
+    ctx.moveTo(-10, -5);
+    ctx.lineTo(-10 - f, 0);
+    ctx.lineTo(-10, 5);
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
