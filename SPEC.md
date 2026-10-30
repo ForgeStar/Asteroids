@@ -13,7 +13,7 @@ Steer ship → dodge asteroids → shoot rocks (they split smaller, score more) 
 - Lives: 3 ships, extra ship every 10,000 pts, respawn with brief invulnerability
 - Score popups at destruction point (like the original), hi-score in localStorage
 - Attract screen (title + drifting rocks), game over screen, pause (P), mute (M), CRT cycle (C)
-- Full-screen 4:3 vector look (bezel dropped after first test) + the collection's WebGL CRT glass shader
+- Cabinet: regenerated vector-style bezel (v2, with alpha-verified WebP) + the collection's WebGL CRT glass shader
 - Audio: Web Audio — thrust noise, fire blip, explosion bursts, UFO siren, extra-ship jingle
 - Touch: tap = start/fire, drag = steer
 

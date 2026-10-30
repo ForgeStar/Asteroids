@@ -1,6 +1,6 @@
 # ASTEROIDS — Classic Arcade Clone
 
-A single-file clone of Atari's 1979 vector **ASTEROIDS** in vanilla JS + canvas, full-screen with the collection's CRT glass shader (barrel distortion, scanlines, reflections).
+A single-file clone of Atari's 1979 vector **ASTEROIDS** in vanilla JS + canvas, rendered inside a dark vector-style cabinet bezel with the collection's CRT glass shader (barrel distortion, scanlines, reflections).
 
 ## Play
 
@@ -22,7 +22,8 @@ A single-file clone of Atari's 1979 vector **ASTEROIDS** in vanilla JS + canvas,
 
 ## Art
 
-- Full-screen 4:3 vector look — no cabinet bezel. A 2× internal render keeps the white line work crisp at any size.
+- Bezel (`bezel.webp`/`bezel.png`) is a generated placeholder — dark plastic, ASTEROIDS logotype, ship/rock line glyphs, coin doors. Swap in hand-made bezel art whenever one exists; the screen window is an 800×600 transparent hole at left 112 / top 212 on the 1024×1024 panel.
+- A 2× internal render keeps the white line work crisp at any size.
 
 ## GitHub Pages
 
