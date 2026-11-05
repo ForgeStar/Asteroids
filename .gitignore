@@ -2,3 +2,5 @@
 ref/
 *.png
 *.psd
+# ...except the X.com card preview (published with the site)
+!preview.png
