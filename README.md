@@ -30,4 +30,4 @@ A single-file clone of Atari's 1979 vector **ASTEROIDS** in vanilla JS + canvas,
 
 This repo is deployed as-is from the root, so the game lives at:
 
-    https://forgestar.github.io/ASTEROIDS/
+    https://forgestar.github.io/Asteroids/
