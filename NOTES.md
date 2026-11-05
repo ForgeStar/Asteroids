@@ -212,6 +212,15 @@ data"), so in any plain browser / in-app browser `plexiReady` never turned
   "No WebGL").
 
 ## History / gotchas
+- **iPad double-tap zoom → black overlay (2026-11-05).** Rapid tap-tap while
+  firing triggered Safari's double-tap zoom. Safari zooms via an intermediate
+  layer, which — exactly like the #reflectWrap ancestor-opacity bug — makes an
+  ancestor a grouping element, cuts the mix-blend-mode layers' backdrop, and
+  paints the reflect/plexi black backgrounds over the cabinet (screen dims to
+  ~0). Fix: the page is un-zoomable — viewport `maximum-scale=1, user-scalable=no`
+  + `html,body { touch-action: none }` + JS `dblclick`/`gesturestart`
+  preventDefault (Safari pinch). The cabinet fits the viewport, so nothing is
+  sacrificed. Rule: a game page with blend-mode layers must never allow zoom.
 - ~~Browser cache shows a STALE bezel/mask~~ — **DISPROVEN** (2026-11-03). The real
   "straight left line / bright highlight on the left" bug: the `#glow` canvas
   src-over-composits its smear ON TOP of the bezel art. The mask correctly marks the

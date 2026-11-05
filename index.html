@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>ASTEROIDS — Classic Arcade Clone</title>
 <!-- X.com player card: playable in-post embed -->
 <meta name="twitter:card" content="player">
@@ -20,6 +20,10 @@
     display: flex; align-items: center; justify-content: center;
     font-family: "Courier New", monospace;
     user-select: none;
+    /* Lock zoom (games must never zoom): a zoomed page composites the
+       mix-blend-mode layers against a broken backdrop -> black overlay.
+       See the dblclick/gesturestart guards in the script. */
+    touch-action: none;
   }
   /* Cabinet face: generated bezel (dark plastic, ASTEROIDS logotype,
      coin doors) with a TRANSPARENT screen window. */
@@ -306,6 +310,15 @@ cv.addEventListener("pointerup", (e) => {
     touchState = null;
   }
 });
+
+// iPad fix: double-tapping (while firing) triggered Safari's double-tap
+// zoom, which zooms on an intermediate layer - that grouping breaks the
+// mix-blend-mode backdrop (same family as the #reflectWrap bug) and the
+// screen dimmed to black. touch-action:none covers most browsers; these
+// catch Safari pinch/double-tap that ignore it. The cabinet fits the
+// viewport exactly, so no panning is sacrificed.
+document.addEventListener("dblclick", (e) => e.preventDefault());
+document.addEventListener("gesturestart", (e) => e.preventDefault());
 
 // ---------------- Game Flow ----------------
 function startGame() {
