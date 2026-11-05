@@ -24,6 +24,7 @@ A single-file clone of Atari's 1979 vector **ASTEROIDS** in vanilla JS + canvas,
 
 - Bezel (`bezel.webp`/`bezel.png`) is a generated placeholder — dark plastic, ASTEROIDS logotype, ship/rock line glyphs, coin doors. Swap in hand-made bezel art whenever one exists; the screen window is an 800×600 transparent hole at left 112 / top 212 on the 1024×1024 panel.
 - A 2× internal render keeps the white line work crisp at any size.
+- Plexiglass layer: worn clear-plastic texture — curved stress cracks, hairline scratches, dust — rendered in the CRT shader and lit from below, so only glowing screen pixels reveal the scratches. The texture is embedded in the script as a base64 data URL (required for `file://` — a file-loaded image is cross-origin-tainted and WebGL refuses it); the on-disk source is the Krea-generated `plexi.webp`. Tuned via `PLEXI_AMT` in the script.
 
 ## GitHub Pages
 

@@ -1,0 +1,4 @@
+# Working assets stay local — only the webp textures ship with the game.
+ref/
+*.png
+*.psd
